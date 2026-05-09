@@ -17,5 +17,30 @@ namespace BookStoreWeb.Controllers
             List<Category> categories = _db.Categories.ToList();
             return View(categories);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Category category) 
+        {
+            if (!String.IsNullOrEmpty(category.Name) && _db.Categories.Any(c => c.Name.ToLower() == category.Name.ToLower()))
+            {
+                ModelState.AddModelError("Name", "Category Name already exists");
+            }
+
+            if (ModelState.IsValid)
+            {
+                _db.Add(category);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+
     }
 }
