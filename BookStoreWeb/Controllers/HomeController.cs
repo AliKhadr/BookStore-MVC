@@ -1,6 +1,4 @@
-using BookStoreWeb.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace BookStoreWeb.Controllers
 {

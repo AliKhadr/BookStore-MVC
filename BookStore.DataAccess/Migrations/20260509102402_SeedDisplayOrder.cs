@@ -2,21 +2,46 @@
 
 #nullable disable
 
-namespace BookStoreWeb.Migrations
+namespace BookStore.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDisplayOrderToCategory : Migration
+    public partial class SeedDisplayOrder : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "DisplayOrder",
+            migrationBuilder.UpdateData(
                 table: "Categories",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
+                keyColumn: "Id",
+                keyValue: 1,
+                column: "DisplayOrder",
+                value: 1);
 
+            migrationBuilder.UpdateData(
+                table: "Categories",
+                keyColumn: "Id",
+                keyValue: 2,
+                column: "DisplayOrder",
+                value: 2);
+
+            migrationBuilder.UpdateData(
+                table: "Categories",
+                keyColumn: "Id",
+                keyValue: 3,
+                column: "DisplayOrder",
+                value: 3);
+
+            migrationBuilder.UpdateData(
+                table: "Categories",
+                keyColumn: "Id",
+                keyValue: 4,
+                column: "DisplayOrder",
+                value: 4);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.UpdateData(
                 table: "Categories",
                 keyColumn: "Id",
@@ -44,14 +69,6 @@ namespace BookStoreWeb.Migrations
                 keyValue: 4,
                 column: "DisplayOrder",
                 value: 0);
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "DisplayOrder",
-                table: "Categories");
         }
     }
 }
