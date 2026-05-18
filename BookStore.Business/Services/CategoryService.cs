@@ -49,5 +49,17 @@ namespace BookStore.Business.Services
             _db.Categories.Remove(category);
             await _db.SaveChangesAsync();
         }
+
+        public async Task<bool> IsCategoryNameUniqueAsync(string name, int? categoryId = null)
+        {
+            if (categoryId.HasValue)
+            {
+                return !await _db.Categories.AnyAsync(c => c.Name.ToLower() == name.ToLower() && c.Id != categoryId.Value);
+            }
+            else
+            {
+                return !await _db.Categories.AnyAsync(c => c.Name.ToLower() == name.ToLower());
+            }
+        }
     }
 }

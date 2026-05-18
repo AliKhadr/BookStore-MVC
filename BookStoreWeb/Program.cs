@@ -1,3 +1,5 @@
+using BookStore.Business.Services;
+using BookStore.Business.Services.IServices;
 using BookStore.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +13,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection")));
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 
