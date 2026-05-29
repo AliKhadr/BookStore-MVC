@@ -21,8 +21,12 @@ namespace BookStore.Business.Services
             return await _db.Products.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        public async Task<IEnumerable<Product>> GetAllProductsAsync(bool includeCategory = false)
         {
+            if (includeCategory)
+            {
+                return await _db.Products.Include(p => p.Category).ToListAsync();
+            }
             return await _db.Products.ToListAsync();
         }
 

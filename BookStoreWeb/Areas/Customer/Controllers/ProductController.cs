@@ -17,8 +17,7 @@ namespace BookStoreWeb.Areas.Customer.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var products = await _productService.GetAllProductsAsync();
-            return View(products);
+            return View();
         }
 
         public async Task<IActionResult> Create()
@@ -90,5 +89,13 @@ namespace BookStoreWeb.Areas.Customer.Controllers
             TempData["success"] = "Product deleted successfully";
             return RedirectToAction("Index");
         }
+
+        #region
+        public async Task<IActionResult> GetAll()
+        {
+            var products = await _productService.GetAllProductsAsync(true);
+            return Json(new { data = products });
+        }
+        #endregion
     }
 }
