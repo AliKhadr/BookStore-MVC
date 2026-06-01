@@ -3,6 +3,7 @@ using BookStore.Business.Services.IServices;
 using BookStore.DataAccess;
 using BookStore.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookStoreWeb.Areas.Customer.Controllers
 {
@@ -10,9 +11,11 @@ namespace BookStoreWeb.Areas.Customer.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
-        public ProductController(IProductService productService)
+        private readonly ICategoryService _categoryService;
+        public ProductController(IProductService productService, ICategoryService categoryService)
         {
             _productService = productService;
+            _categoryService = categoryService;
         }
 
         public async Task<IActionResult> Index()
@@ -22,6 +25,11 @@ namespace BookStoreWeb.Areas.Customer.Controllers
 
         public async Task<IActionResult> Upsert()
         {
+            IEnumerable<SelectListItem> categoryList = (await _categoryService.GetAllCategoriesAsync()).Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            });
             return View();
         }
 
