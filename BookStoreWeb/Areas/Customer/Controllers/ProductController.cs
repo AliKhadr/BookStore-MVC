@@ -20,14 +20,14 @@ namespace BookStoreWeb.Areas.Customer.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Upsert()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Product product)
+        public async Task<IActionResult> Upsert(Product product)
         {
             if (ModelState.IsValid)
             {
@@ -38,33 +38,6 @@ namespace BookStoreWeb.Areas.Customer.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            var product = await _productService.GetProductByIdAsync(id.Value);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [ActionName("Edit")]
-        public async Task<IActionResult> EditPOST(Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                await _productService.UpdateProductAsync(product);
-                TempData["success"] = "Product updated successfully";
-                return RedirectToAction("Index");
-            }
-            return View(product);
-        }
 
         public async Task<IActionResult> Delete(int? id)
         {
