@@ -2,6 +2,7 @@
 using BookStore.Business.Services.IServices;
 using BookStore.DataAccess;
 using BookStore.Models;
+using BookStore.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -25,12 +26,19 @@ namespace BookStoreWeb.Areas.Customer.Controllers
 
         public async Task<IActionResult> Upsert()
         {
-            IEnumerable<SelectListItem> categoryList = (await _categoryService.GetAllCategoriesAsync()).Select(c => new SelectListItem
+            var categories = await _categoryService.GetAllCategoriesAsync();
+
+            ProductVM productVM = new ProductVM()
             {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            });
-            return View();
+                Product = new Product(),
+                CategoryList = (categories).Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                })
+            };
+
+            return View(productVM);
         }
 
         [HttpPost]
