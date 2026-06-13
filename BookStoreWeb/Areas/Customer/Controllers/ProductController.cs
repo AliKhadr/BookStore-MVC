@@ -43,7 +43,7 @@ namespace BookStoreWeb.Areas.Customer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(Product product)
+        public async Task<IActionResult> Upsert(Product product, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -51,7 +51,20 @@ namespace BookStoreWeb.Areas.Customer.Controllers
                 TempData["success"] = "Product created successfully";
                 return RedirectToAction("Index");
             }
-            return View();
+            else
+            {
+                var categories = await _categoryService.GetAllCategoriesAsync();
+
+                ProductVM productVM = new ProductVM()
+                {
+                    CategoryList = (categories).Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    })
+                };
+                return View(productVM);
+            }
         }
 
 
