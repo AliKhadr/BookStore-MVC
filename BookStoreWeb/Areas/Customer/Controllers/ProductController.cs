@@ -13,10 +13,12 @@ namespace BookStoreWeb.Areas.Customer.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-        public ProductController(IProductService productService, ICategoryService categoryService)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IProductService productService, ICategoryService categoryService, IWebHostEnvironment webHostEnvironment)
         {
             _productService = productService;
             _categoryService = categoryService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index()
@@ -47,6 +49,15 @@ namespace BookStoreWeb.Areas.Customer.Controllers
         {
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine("images", "products");
+                    string finalPath = Path.Combine(wwwRootPath, productPath);
+                }
+
                 await _productService.CreateProductAsync(product);
                 TempData["success"] = "Product created successfully";
                 return RedirectToAction("Index");
