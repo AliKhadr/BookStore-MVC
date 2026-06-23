@@ -26,7 +26,7 @@ namespace BookStoreWeb.Areas.Customer.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Upsert()
+        public async Task<IActionResult> Upsert(int? id)
         {
             var categories = await _categoryService.GetAllCategoriesAsync();
 
@@ -40,7 +40,18 @@ namespace BookStoreWeb.Areas.Customer.Controllers
                 })
             };
 
-            return View(productVM);
+            if (id == null || id == 0) 
+            {
+                // Create
+                return View(productVM);
+            }
+            else
+            {
+                // Update
+                productVM.Product = await _productService.GetProductByIdAsync(id.Value);
+                return View(productVM);
+            }
+            
         }
 
         [HttpPost]
