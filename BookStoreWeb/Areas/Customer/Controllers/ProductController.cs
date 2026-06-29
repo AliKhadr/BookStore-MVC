@@ -79,10 +79,21 @@ namespace BookStoreWeb.Areas.Customer.Controllers
                     }
 
                     productVM.Product.ImageUrl = Path.Combine(@"\", productPath, fileName).Replace("\\", "/");
-                }                
+                }
 
-                await _productService.CreateProductAsync(productVM.Product);
-                TempData["success"] = "Product created successfully";
+                if (productVM.Product.Id == null || productVM.Product.Id == 0)
+                {
+                    // Create
+                    await _productService.CreateProductAsync(productVM.Product);
+                    TempData["success"] = "Product created successfully";
+                }
+                else
+                {
+                    // Update
+                    await _productService.UpdateProductAsync(productVM.Product);
+                    TempData["success"] = "Product Updated successfully";
+                }
+
                 return RedirectToAction("Index");
             }
             else
