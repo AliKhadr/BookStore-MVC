@@ -112,36 +112,39 @@ namespace BookStoreWeb.Areas.Customer.Controllers
             }
         }
 
-
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            var product = await _productService.GetProductByIdAsync(id.Value);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [ActionName("Delete")]
-        public async Task<IActionResult> DeletePOST(int id)
-        {
-            await _productService.DeleteProductAsync(id);
-            TempData["success"] = "Product deleted successfully";
-            return RedirectToAction("Index");
-        }
-
         #region
         public async Task<IActionResult> GetAll()
         {
             var products = await _productService.GetAllProductsAsync(true);
             return Json(new { data = products });
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == 0 || id == null)
+            {
+                return Json(new { success = false, message = "Invalid ID" });
+            }
+
+            var productToBeDeleted = await _productService.GetProductByIdAsync(id.Value);
+            if (productToBeDeleted == null)
+            {
+                return Json(new { success = false, message = "Error while Deleting" });
+            }
+
+            //Delete Product Image if that exists
+            if (!string.IsNullOrEmpty(productToBeDeleted.ImageUrl))
+            {
+                //Build complete image path
+                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\'));
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
+            await _productService.DeleteProductAsync(id.Value);
+            return Json(new { success = true, message = "Delete Successful" });
         }
         #endregion
     }
