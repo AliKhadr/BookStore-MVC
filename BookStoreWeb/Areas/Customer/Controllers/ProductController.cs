@@ -137,7 +137,7 @@ namespace BookStoreWeb.Areas.Customer.Controllers
             if (!string.IsNullOrEmpty(productToBeDeleted.ImageUrl))
             {
                 //Build complete image path
-                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\'));
+                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\', '/'));
                 if (System.IO.File.Exists(imagePath))
                 {
                     System.IO.File.Delete(imagePath);
