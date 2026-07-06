@@ -36,10 +36,10 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Category" asp-action="Index">Categories</a>
+                            <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Product" asp-action="Index">Products</a>
+                            <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">Products</a>
                         </li>
                     </ul>
                 </div>
@@ -47,7 +47,7 @@
         </nav>
     </header>
     <div class="flex-grow-1">
-        <main role="main" class="pb-3">
+        <main role="main">
             <partial name="_Notification" />
             @RenderBody()
         </main>
