@@ -16,9 +16,16 @@ namespace BookStore.Business.Services
             _db = db;
         }
 
-        public async Task<Product?> GetProductByIdAsync(int id)
+        public async Task<Product?> GetProductByIdAsync(int id, bool includeCategory = false)
         {
-            return await _db.Products.FindAsync(id);
+            if (includeCategory)
+            {
+                return await _db.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id);
+            }
+            else
+            {
+                return await _db.Products.FirstOrDefaultAsync(p => p.Id == id);
+            }
         }
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync(bool includeCategory = false)
@@ -27,7 +34,10 @@ namespace BookStore.Business.Services
             {
                 return await _db.Products.Include(p => p.Category).ToListAsync();
             }
-            return await _db.Products.ToListAsync();
+            else
+            {
+                return await _db.Products.ToListAsync();
+            }
         }
 
         public async Task<Product> CreateProductAsync(Product product)

@@ -19,6 +19,16 @@ namespace BookStoreWeb.Areas.Customer.Controllers
             return View(products);
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            var product = await _productService.GetProductByIdAsync(id, includeCategory: true);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
+
         public IActionResult Privacy()
         {
             return View();
